@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "901957020464",
+    "project_id": "campusell-70831",
+    "storage_bucket": "campusell-70831.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:901957020464:android:585a66157d66d5b42976f5",
+        "android_client_info": {
+          "package_name": "com.example.flutter_appme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "901957020464-23u07a4q03a60pf4p9i4gs2nukk5rp8r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDId5_pIY3TOU7gm1DFV_45ht5xTX55Nmc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "901957020464-23u07a4q03a60pf4p9i4gs2nukk5rp8r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

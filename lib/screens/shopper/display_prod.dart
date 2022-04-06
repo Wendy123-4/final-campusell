@@ -1,0 +1,380 @@
+import 'package:carousel_pro/carousel_pro.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_sms/flutter_sms.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:maps_launcher/maps_launcher.dart';
+import 'package:flutter_appme/models/product.dart';
+import 'package:flutter_appme/shared/constants.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+
+class DisplayProductPage extends StatelessWidget {
+  void _sendSMS(String message, List<String> recipients) async {
+    String _result = await sendSMS(message: message, recipients: recipients)
+        .catchError((onError) {
+      print(onError);
+    });
+    print(_result);
+  }
+
+  void _openWhatsapp()async{
+
+  }
+
+  getImages(Product product) {
+    var imageList = [];
+
+    if (product.productImageUrl1 != "" || product.productImageUrl1 != null) {
+      imageList.add(Image.network(
+        product.productImageUrl1,
+        fit: BoxFit.cover,
+      ));
+    }
+    if (product.productImageUrl2 != "" || product.productImageUrl2 != null) {
+      imageList.add(Image.network(
+        product.productImageUrl2,
+        fit: BoxFit.cover,
+      ));
+    }
+    if (product.productImageUrl3 != "" || product.productImageUrl3 != null) {
+      imageList.add(Image.network(
+        product.productImageUrl3,
+        fit: BoxFit.cover,
+      ));
+    }
+
+    if (imageList.length == 0) {
+      imageList.add(Image.network(
+        defaultUrl,
+        fit: BoxFit.cover,
+      ));
+    }
+
+    return imageList;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final Product product = ModalRoute.of(context).settings.arguments;
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+
+              children: <Widget>[
+
+                Row(
+                  children: [
+                    Padding(padding: EdgeInsets.only(left: 30)),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            product.productName,
+                            style: TextStyle(
+                              color: fontType.withOpacity(0.75),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.close,
+                              size: 20,
+                              color: fontType.withOpacity(0.75),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(padding: EdgeInsets.only(right: 30)),
+                  ],
+                ),
+                SizedBox(
+                  height: 200.0,
+                  width: double.infinity,
+                  child: Carousel(
+                    autoplay: false,
+                    dotSize: 4.0,
+                    dotSpacing: 15.0,
+                    images: getImages(product),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(30.0),
+                  child: MediaQuery.removePadding(
+                    context: context,
+                    removeTop: true,
+                      child: SingleChildScrollView(
+                        child: ListView(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Product Price",
+                                  style: TextStyle(
+                                    color: fontType.withOpacity(0.5),
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Text(
+                                  "RWF ${product.productPrice}",
+                                  style: TextStyle(
+                                    color: fontType,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                )
+                              ],
+                            ),
+                            Padding(padding: EdgeInsets.all(15)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Vendor details",
+                                  style: TextStyle(
+                                    color: fontType.withOpacity(0.5),
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "Call Number",
+                                      style: TextStyle(
+                                        color: fontType.withOpacity(0.5),
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    Padding(padding: EdgeInsets.only(right: 5)),
+                                    IconButton(
+                                      onPressed: () {
+                                        launch("tel://0${product.productStoreNumber}");
+                                      },
+                                      icon: SvgPicture.asset("images/call_number.svg"),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  product.productStoreName,
+                                  style: TextStyle(
+                                    color: fontType,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "Copy Number",
+                                      style: TextStyle(
+                                        color: fontType.withOpacity(0.5),
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    Padding(padding: EdgeInsets.only(right: 5)),
+                                    IconButton(
+                                      onPressed: () {
+                                        Clipboard.setData(new ClipboardData(
+                                                text: product.productStoreNumber))
+                                            .then((_) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(
+                                                  content: Text(
+                                                      "Phone number copied to clipboard")));
+                                        });
+                                      },
+                                      icon: SvgPicture.asset("images/copy_number.svg"),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                            Padding(padding: EdgeInsets.all(10)),
+                            Text(
+                              "Product description",
+                              style: TextStyle(
+                                color: fontType.withOpacity(0.5),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14,
+                              ),
+                            ),
+                            Padding(padding: EdgeInsets.all(10)),
+                            Text(
+                              product.productDescription,
+                              style: TextStyle(
+                                color: fontType.withOpacity(0.85),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14,
+                              ),
+                            ),
+                            Padding(padding: EdgeInsets.all(10)),
+                            Container(
+                              height: 50,
+                              child: ElevatedButton(
+                                style: buttonStyle,
+                                onPressed: () {
+                                  _sendSMS(
+                                      "Hello, I am interested in your product: ${product.productName}, and will like to chat further about this product",
+                                      [product.productStoreNumber]);
+                                },
+                                child: Text("Message Vendor"),
+                              ),
+
+                            ),
+                            Padding(padding: EdgeInsets.all(10)),
+                            Container(
+                              height: 50,
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                    MaterialStateProperty.all<Color>(Colors.white),
+                                    shape:
+                                    MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10.0),
+                                        )),
+                                    elevation: MaterialStateProperty.resolveWith<double>(
+                                      // As you said you dont need elevation. I'm returning 0 in both case
+                                          (Set<MaterialState> states) {
+                                        if (states.contains(MaterialState.disabled)) {
+                                          return 0;
+                                        }
+                                        return 0; // Defer to the widget's default.
+                                      },
+                                    ),
+                                    side: MaterialStateProperty.all(
+                                        BorderSide(width: 1, color: Colors.green))),
+
+                                  //fix whatsapp
+                                  onPressed: () async => await launch(
+                                      "https://wa.me/${[product.productStoreNumber]}?text=Hello, I am interested in your product: ${product.productName},"
+                                          " and will like to chat further about this product"),
+                                  //MapsLauncher.launchQuery(product.productStoreLocation);
+
+                                child: Row(
+                                  children: const [
+                                    Icon(Icons.whatsapp_outlined,
+                                    color: Colors.green,
+                                        ),
+                                    Text(
+                                      "                           Whatsapp",
+                                      style: TextStyle(color: Colors.green),
+                                        textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Padding(padding: EdgeInsets.all(20)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Product State",
+                                  style: TextStyle(
+                                    color: fontType.withOpacity(0.5),
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                Container(
+                                  color: softWork,
+                                  padding: EdgeInsets.only(
+                                      top: 10.0, bottom: 10.0, left: 10.0, right: 10.0),
+                                  child: Text(
+                                    product.productState,
+                                    style: TextStyle(
+                                      color: fontType,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            Padding(padding: EdgeInsets.all(15)),
+                            Text(
+                              "Pickup Address",
+                              style: TextStyle(
+                                color: fontType.withOpacity(0.5),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14,
+                              ),
+                            ),
+                            Padding(padding: EdgeInsets.all(5)),
+                            Text(
+                              product.productStoreLocation,
+                              style: TextStyle(
+                                color: fontType,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16,
+                              ),
+                            ),
+                            Padding(padding: EdgeInsets.all(10)),
+                            Container(
+                              height: 50,
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(Colors.white),
+                                    shape:
+                                        MaterialStateProperty.all<RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    )),
+                                    elevation: MaterialStateProperty.resolveWith<double>(
+                                      // As you said you dont need elevation. I'm returning 0 in both case
+                                      (Set<MaterialState> states) {
+                                        if (states.contains(MaterialState.disabled)) {
+                                          return 0;
+                                        }
+                                        return 0; // Defer to the widget's default.
+                                      },
+                                    ),
+                                    side: MaterialStateProperty.all(
+                                        BorderSide(width: 1, color: thotBlue))),
+                                onPressed: () {
+                                  MapsLauncher.launchQuery(product.productStoreLocation);
+                                },
+                                child: Text(
+                                  "Get directions",
+                                  style: TextStyle(color: thotBlue),
+                                ),
+                              ),
+                            ),
+                            Padding(padding: EdgeInsets.all(10)),
+                          ],
+                        ),
+                      ),
+                    
+                  ),
+                )
+              ],
+
+          ),
+        ),
+      ),
+    );
+  }
+}
