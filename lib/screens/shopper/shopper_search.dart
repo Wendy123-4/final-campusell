@@ -26,14 +26,14 @@ class ShopperSearch extends StatelessWidget {
                   style:
                       TextStyle(color: fontType, fontWeight: FontWeight.w600),
                 ),
-                IconButton(
-                  icon: SvgPicture.asset(
-                    "images/switch_to_shopper.svg",
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).popUntil(ModalRoute.withName('/'));
-                  },
-                ),
+                // IconButton(
+                //   icon: SvgPicture.asset(
+                //     "images/switch_to_shopper.svg",
+                //   ),
+                //   onPressed: () {
+                //     Navigator.of(context).popUntil(ModalRoute.withName('/'));
+                //   },
+                // ),
               ],
             ),
             Padding(padding: const EdgeInsets.all(25)),
@@ -101,9 +101,10 @@ class ShopperSearch extends StatelessWidget {
             if (products.length > 0)
               Container(
                   constraints: BoxConstraints(
-                      minHeight: MediaQuery.of(context).size.height / 2,
+                      minHeight: MediaQuery.of(context).size.height / 3,
                       minWidth: double.infinity,
-                      maxHeight: MediaQuery.of(context).size.height / 2),
+                      maxHeight: MediaQuery.of(context).size.height / 3
+                  ),
                   child: MediaQuery.removePadding(
                     context: context,
                     removeTop: true,
