@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_appme/screens/authentication/authenticate.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:flutter_appme/models/merchant.dart';
@@ -10,6 +11,9 @@ import 'package:flutter_appme/shared/loading.dart';
 import 'package:flutter_appme/shared/picture_upload.dart';
 import 'package:flutter_appme/shared/profile_pic.dart';
 import 'package:provider/provider.dart';
+
+import '../../authentication/authentication_wrapper.dart';
+import '../../shopper/shopper_landing.dart';
 
 class EditMerchantDetails extends StatefulWidget {
   final MerchantData merchantData;
@@ -182,7 +186,7 @@ class _EditMerchantDetailsState extends State<EditMerchantDetails> {
                           ),
                           Padding(padding: const EdgeInsets.all(10)),
                           Text(
-                            "SHOP NAME",
+                            "NAME",
                             style: TextStyle(
                               color: grey,
                               fontSize: 12,
@@ -194,7 +198,7 @@ class _EditMerchantDetailsState extends State<EditMerchantDetails> {
                             // initialValue: merchantData["merchantName"],
                             validator: (value) {
                               if (value.isEmpty) {
-                                return "Please enter your shop name";
+                                return "Please enter your name";
                               }
                               return null;
                             },
@@ -261,7 +265,7 @@ class _EditMerchantDetailsState extends State<EditMerchantDetails> {
                             // initialValue: merchantData["merchantName"],
                             validator: (value) {
                               if (value.isEmpty) {
-                                return "Please enter your shop name";
+                                return "Please enter your  name";
                               }
                               return null;
                             },
@@ -473,7 +477,8 @@ class _EditMerchantDetailsState extends State<EditMerchantDetails> {
                   iconPath: "images/shopper.svg",
                   displayText: "Switch to shopper",
                   press: () {
-                    Navigator.of(context).popUntil(ModalRoute.withName('/'));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> ShopperLanding()),);
+                    //Navigator.of(context).popUntil(ModalRoute.withName('/shopperLanding'));
                   },
                 ),
                 Padding(padding: const EdgeInsets.all(3)),
@@ -481,7 +486,8 @@ class _EditMerchantDetailsState extends State<EditMerchantDetails> {
                   iconPath: "images/logOut.svg",
                   displayText: "Log Out",
                   press: () async {
-                    Navigator.of(context).popUntil(ModalRoute.withName('/'));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> Wrapper()),);
+                   // Navigator.of(context).popUntil(ModalRoute.withName('/authenticationPage'));
 
                     await context.read<AuthenticationService>().signOut();
                   },

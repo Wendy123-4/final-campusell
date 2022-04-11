@@ -61,7 +61,7 @@ class _RegistrationProfilePicState extends State<RegistrationProfilePic> {
                       ),
                       Padding(padding: const EdgeInsets.all(10)),
                       Text(
-                        "Let's get to know the\nperson behind the\nshop",
+                        "Let's get to know the\nperson behind the\n item",
                         style: TextStyle(
                           color: fontType,
                           fontSize: 24,

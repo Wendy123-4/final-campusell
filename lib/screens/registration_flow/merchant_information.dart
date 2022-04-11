@@ -23,19 +23,19 @@ class RegistrationMerchantInformation extends StatelessWidget {
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
+                children: const <Widget>[
                   Expanded(
                       child: Divider(
                     color: thotBlue,
                     thickness: 2,
                   )),
-                  Padding(padding: const EdgeInsets.all(3)),
+                  Padding(padding: EdgeInsets.all(3)),
                   Expanded(
                       child: Divider(
                     color: vanillaBaby,
                     thickness: 2,
                   )),
-                  Padding(padding: const EdgeInsets.all(3)),
+                  Padding(padding: EdgeInsets.all(3)),
                   Expanded(
                       child: Divider(
                     color: vanillaBaby,

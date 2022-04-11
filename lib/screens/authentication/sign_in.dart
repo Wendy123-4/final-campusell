@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_appme/screens/authentication/forgot_password.dart';
 import 'package:flutter_appme/services/authentication_service.dart';
 import 'package:flutter_appme/shared/constants.dart';
 import 'package:flutter_appme/shared/loading.dart';
@@ -160,6 +162,11 @@ class _SignInState extends State<SignIn> {
                               ..onTap = () {
                                 // TODO: Implement "forgot password"
                                 // Not implemented yet;
+                                // FirebaseAuth.instance.sendPasswordResetEmail(email: emailController);
+                                // Navigator.push(context, MaterialPageRoute(builder: (context){
+                                //   return ResetLink();
+                                // }));
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>  Forgot()),);
                               }),
                       ),
                     ),
